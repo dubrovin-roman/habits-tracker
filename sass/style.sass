@@ -3,6 +3,7 @@
 
 body
     font-family: 'Comfortaa', cursive
+    font-weight: 400
     background-color: #F3F6FD
 
 .app
@@ -51,3 +52,111 @@ body
         cursor: pointer
         &:hover
             background: #EFF2FF
+
+.content
+    min-width: 900px
+    padding: 45px
+
+header
+    display: flex
+    justify-content: space-between
+    margin-bottom: 30px
+    h1
+        font-size: 30px
+        line-height: 33px
+        color: #000000
+
+.progress
+    display: flex
+    flex-direction: column
+    gap: 12px
+    min-width: 235px
+    &__text
+        display: flex
+        justify-content: space-between
+    &__name
+        font-size: 14px
+        line-height: 16px
+        color: #232360
+    &__percent
+        font-size: 12px
+        line-height: 13px
+        color: #768396
+    &__bar
+        width: 100%
+        height: 5px
+        background: #E6E9ED
+        border-radius: 4px
+        position: relative
+    &__cover-bar
+        position: absolute
+        width: 80%
+        height: 5px
+        background: #5051F9
+        border-radius: 4px
+
+.habbit
+    background: #FFFFFF
+    border-radius: 10px
+    display: flex
+    align-items: center
+    margin-bottom: 12px
+    &__day
+        background: #FBFAFF
+        border-radius: 10px 0 0 10px
+        border-right: 1px solid #E7EBFB
+        font-size: 14px
+        line-height: 16px
+        padding: 20px 40px
+        min-width: 150px
+    &__comment
+        font-size: 14px
+        line-height: 16px
+        padding: 20px 25px
+    &__form
+        display: flex
+        gap: 15px
+        width: 100%
+        padding: 0px 10px 0px 25px
+        position: relative
+    &__delete
+        margin-left: auto
+        margin-right: 10px
+        border: none
+        background: none
+        cursor: pointer
+        border-radius: 5px
+        padding: 2px
+        &:hover
+            background: #EFF2FF
+
+.input
+    background: #FFFFFF
+    border: 1px solid #E7EBFB
+    border-radius: 9px
+    padding: 12px 20px
+    font-family: 'Comfortaa', cursive
+    flex: 1
+    font-weight: 400
+    font-size: 14px
+    line-height: 16px
+    &::placeholder
+        color: #8899A8
+    &_icon
+        padding-left: 45px
+    &__icon
+        position: absolute
+        top: 10px
+        left: 45px
+
+.button
+    background: #EDECFE
+    border-radius: 9px
+    border: none
+    font-size: 13px
+    line-height: 14px
+    color: #5051F9
+    padding: 14px 30px
+    cursor: pointer
+    &:hover
+        background: #dfddfe
