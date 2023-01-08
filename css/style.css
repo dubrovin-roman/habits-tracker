@@ -534,6 +534,9 @@ header h1 {
 .input_icon {
   padding-left: 45px;
 }
+.input_error {
+  border: 1px solid red;
+}
 .input__icon {
   position: absolute;
   top: 10px;

@@ -2,6 +2,8 @@
 
 let habbits = [];
 const HABBITS_KEY = 'HABBITS_KEY';
+const GLOBAL_ACTIVE_HABBIT_ID = "GLOBAL_ACTIVE_HABBIT_ID";
+let globalActiveHabbitId;
 
 /* page */
 const page = {
@@ -19,6 +21,10 @@ const page = {
 
 /* utils */
 function loudData() {
+    const globalId = localStorage.getItem(GLOBAL_ACTIVE_HABBIT_ID);
+    if (globalId) {
+        globalActiveHabbitId = Number(globalId);
+    }
     const stringHabbits = localStorage.getItem(HABBITS_KEY);
     const arrayHabbits = JSON.parse(stringHabbits);
     if (Array.isArray(arrayHabbits)) {
@@ -28,6 +34,7 @@ function loudData() {
 
 function saveData() {
     localStorage.setItem(HABBITS_KEY, JSON.stringify(habbits));
+    localStorage.setItem(GLOBAL_ACTIVE_HABBIT_ID, globalActiveHabbitId);
 }
 
 /* rendering */
@@ -87,6 +94,7 @@ function rerenderMain(activeHabbit) {
 }
 
 function rerender(activeHabbitId) {
+    globalActiveHabbitId = activeHabbitId;
     const activeHabbit = habbits.find(habbit => habbit.id === activeHabbitId);
     if (!activeHabbit) {
         return;
@@ -96,8 +104,34 @@ function rerender(activeHabbitId) {
     rerenderMain(activeHabbit);
 }
 
+/* work with days*/
+function addDay(event) {
+    event.preventDefault();
+    const form = event.target;
+    const data = new FormData(form);
+    const comment = data.get('comment');
+    /*
+    const habbitId = Number(document.querySelector('.menu__item_active').getAttribute('menu-habbit-id'));
+    const existed = habbits.find(habbit => habbit.id === habbitId);
+    if (existed) {
+        existed.days.push({comment});
+        saveData();
+        rerender(existed);
+    }
+    */
+    form['comment'].classList.remove('input_error');
+    if (!comment) {
+        form['comment'].classList.add('input_error');
+        return;
+    }
+    habbits.find(habbit => habbit.id === globalActiveHabbitId).days.push({comment});
+    form['comment'].value = '';
+    rerender(globalActiveHabbitId);
+    saveData();
+}
+
 /* init */
 (() => {
     loudData();
-    rerender(habbits[0].id);
+    rerender(globalActiveHabbitId ? globalActiveHabbitId : habbits[0].id);
 })();
