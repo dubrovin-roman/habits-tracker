@@ -16,6 +16,7 @@ function saveData() {
     localStorage.setItem(HABBITS_KEY, JSON.stringify(habbits));
 }
 
+/* init */
 (() => {
     loudData();
 })();
