@@ -16,6 +16,10 @@ const page = {
     main: {
         days: document.getElementById('days'),
         habbitAddDay: document.getElementById('day-add')
+    },
+    popup: {
+        cover: document.querySelector('.cover'),
+        iconFild: document.querySelector('.popup__form input[name="icon"]')
     }
 };
 
@@ -35,6 +39,15 @@ function loudData() {
 function saveData() {
     localStorage.setItem(HABBITS_KEY, JSON.stringify(habbits));
     localStorage.setItem(GLOBAL_ACTIVE_HABBIT_ID, globalActiveHabbitId);
+}
+
+function globalExceptionHendler(form, fildName, value) {
+    form[fildName].classList.remove('input_error');
+    if (!value) {
+        form[fildName].classList.add('input_error');
+        return true;
+    }
+    return false;
 }
 
 /* rendering */
@@ -69,8 +82,8 @@ function rerenderHead(activeHabbit) {
 
     const progress = (Math.round((activeHabbit.days.length / activeHabbit.target) * 100) / 100) * 100;
     const percent = progress > 100 ? 100 : progress;
-    page.header.progressPercent.innerText = `${percent}%`;
-    page.header.progressCoverBar.style.width = `${percent}%`;
+    page.header.progressPercent.innerText = `${percent.toFixed(0)}%`;
+    page.header.progressCoverBar.style.width = `${percent.toFixed(0)}%`;
 }
 
 function rerenderMain(activeHabbit) {
@@ -119,9 +132,7 @@ function addDay(event) {
         rerender(existed);
     }
     */
-    form['comment'].classList.remove('input_error');
-    if (!comment) {
-        form['comment'].classList.add('input_error');
+    if (globalExceptionHendler(form, 'comment', comment)) {
         return;
     }
     habbits.find(habbit => habbit.id === globalActiveHabbitId).days.push({comment});
@@ -135,6 +146,57 @@ function deleteDay(index) {
     .days.splice(index, 1);
     rerender(globalActiveHabbitId);
     saveData();
+}
+
+/* popup */
+function toggelPopup() {
+    if (page.popup.cover.classList.contains('cover_hidden')) {
+        page.popup.cover.classList.remove('cover_hidden');
+    } else {
+        page.popup.cover.classList.add('cover_hidden');
+    }
+}
+
+function setIcon(context, icon) {
+    page.popup.iconFild.value = icon;
+    document.querySelector('.icon_active').classList.remove('icon_active');
+    context.classList.add('icon_active');
+}
+
+function addHabbit(event) {
+    event.preventDefault();
+    const form = event.target;
+    const data = new FormData(form);
+    const name = data.get('name');
+    let target = data.get('target');
+    const icon = data.get('icon');
+    if (globalExceptionHendler(form, 'name', name)) {
+        return;
+    }
+    if (globalExceptionHendler(form, 'target', target)) {
+        return;
+    }
+    
+    target = Number(target);
+
+    const habbit = {
+        id: getNextId(),
+        icon,
+        name,
+        target,
+        days: []
+    }
+    habbits.push(habbit);
+    form['name'].value = '';
+    form['target'].value = '';
+    toggelPopup();
+    rerender(globalActiveHabbitId);
+    saveData();
+}
+
+function getNextId() {
+    let lastId = habbits.slice(-1)[0].id;
+    return ++lastId;
 }
 
 /* init */
